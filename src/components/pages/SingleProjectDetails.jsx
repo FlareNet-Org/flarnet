@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import './SingleProjectDetails.css';
 import { motion } from 'framer-motion';
-import { FaGithub, FaCode } from 'react-icons/fa';
+import { FaGithub } from 'react-icons/fa';
 import { Button } from '@/components/ui/button';
 import {
     Table,
@@ -12,7 +12,7 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from "@/components/ui/table"
+} from "@/components/ui/table";
 
 // Mock project data
 const MOCK_PROJECT = {
@@ -48,7 +48,6 @@ const MOCK_DEPLOYMENTS = [
 ];
 
 const SingleProjectDetails = () => {
-    const API_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
     const { id } = useParams();
     const navigate = useNavigate();
     const [project, setProject] = useState(null);
@@ -74,10 +73,6 @@ const SingleProjectDetails = () => {
 
         loadMockData();
     }, [id]);
-
-    const handleViewCode = () => {
-        navigate(`/editor/${id}`);
-    };
 
     const handleDeploy = () => {
         navigate(`/service/${id}`);
@@ -111,16 +106,9 @@ const SingleProjectDetails = () => {
             {/* Action Buttons */}
             <div className="action-buttons">
                 <Button 
-                    onClick={handleViewCode} 
-                    className="code-editor-button"
-                    variant="default"
-                >
-                    <FaCode className="mr-2" /> View Code Editor
-                </Button>
-                <Button 
                     onClick={handleDeploy} 
                     className="deploy-button"
-                    variant="outline"
+                    variant="default"
                 >
                     Deploy Project
                 </Button>
