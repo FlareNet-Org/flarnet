@@ -3,7 +3,7 @@ name: Deploy Frontend to AWS S3 & CloudFront
 on:
   push:
     branches:
-      - main
+      - chk_cicd
 
 jobs:
   deploy:
