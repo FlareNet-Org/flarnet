@@ -24,7 +24,7 @@ const SingleProjectDetails = () => {
     useEffect(() => {
         const fetchProjectDetails = async () => {
             try {
-                const response = await axios.get(`http://localhost:5000/api/project/${id}`);
+                const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/project/${id}`);
                 if (response.data) {
                     setProject(response.data);
                 } else {
@@ -40,7 +40,7 @@ const SingleProjectDetails = () => {
 
         const fetchDeployments = async () => {
             try {
-                const response = await axios.get(`http://localhost:5000/deployments/${id}`);
+                const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/deployments/${id}`);
                 if (response.data.success) {
                     setDeployments(response.data.deployments);
                 }

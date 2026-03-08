@@ -58,7 +58,7 @@ export const ChatInterface = ({ triggerAnimation }) => {
     }
 
     try {
-      const response = await fetch('http://localhost:5000/api/llm/chat', {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/llm/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: inputMessage, userId })

@@ -40,7 +40,7 @@ const DeploymentProgress = () => {
       const webhookCreated = localStorage.getItem("webhookCreated");
       if (webhookCreated) return;
 
-      await axios.post("http://localhost:5000/api/github/create-webhook", requestBody, {
+      await axios.post("${import.meta.env.VITE_API_BASE_URL}/api/github/create-webhook", requestBody, {
         headers: { "Content-Type": "application/json" },
       });
       localStorage.setItem("webhookCreated", "true");
@@ -59,8 +59,8 @@ const DeploymentProgress = () => {
     const fetchLogs = async () => {
       try {
         const url = lastFetchedTimestamp
-          ? `http://localhost:5000/getLogs/${id}?since=${lastFetchedTimestamp}`
-          : `http://localhost:5000/getLogs/${id}`;
+          ? `${import.meta.env.VITE_API_BASE_URL}/getLogs/${id}?since=${lastFetchedTimestamp}`
+          : `${import.meta.env.VITE_API_BASE_URL}/getLogs/${id}`;
   
         const response = await fetch(url);
         if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
