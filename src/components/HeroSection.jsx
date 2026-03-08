@@ -146,6 +146,7 @@ const HeroSection = () => {
               />
             </div>
             <span className="tech-text">FlareNet</span>
+            <span className="text-xl md:text-2xl text-yellow-400 mt-2 animate-pulse">Coming Soon - Services will be available shortly. Stay tuned!</span>
           </h1>
           <p className="text-lg md:text-xl mb-8 neon-text">
             Deploy your applications instantly with world-class performance, scalability, and security.

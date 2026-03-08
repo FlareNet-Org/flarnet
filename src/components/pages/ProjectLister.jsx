@@ -3,10 +3,11 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { FaGithub } from "react-icons/fa";
-import "./projectLister.css";
+import "./ProjectLister.css";
 import { useUser } from "../../context/userContext";
 
 const ProjectLister = () => {
+    const API_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
     const [projects, setProjects] = useState([]);
     const navigate = useNavigate();
     const { user } = useUser();  // Access user from context
@@ -14,13 +15,12 @@ const ProjectLister = () => {
     // Fetch user's projects
     useEffect(() => {
         if (!user?.id) {
-            console.log("No user is logged in!");
             navigate("/login");
             return;
         }
         const fetchProjects = async () => {
             try {
-                const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/projects/${user.id}`);
+                const response = await axios.get(`${API_URL}/projects/${user.id}`);
                 if (response.data.success) {
                     setProjects(response.data.data);
                 }

@@ -9,6 +9,7 @@ export function SpiderMan({ animationTrigger }) {
   const { actions } = useAnimations(animations, spidermanRef);
   const [currentAnimation, setCurrentAnimation] = useState("idle");
   const [isAnimating, setIsAnimating] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
   const animationQueue = useRef([]);
 
   // Map animation triggers to actual animation names
@@ -25,46 +26,67 @@ export function SpiderMan({ animationTrigger }) {
   };
   const playAnimation = async (animationName) => {
     if (!actions[animationMap[animationName]]) return;
-    
+
     setIsAnimating(true);
     Object.values(actions).forEach(action => action.stop());
-    
+
     const action = actions[animationMap[animationName]];
-    
+
     return new Promise((resolve) => {
       action
         .reset()
         .setLoop(THREE.LoopOnce)
         .fadeIn(0.3)
         .play();
-    // Listen for animation completion
-    action.clampWhenFinished = true;
-    const duration = action.getClip().duration * 1000;
-    
-    console.log(`🕷️ Playing: ${animationName}, Duration: ${duration}ms`);
-    
-    setTimeout(() => {
-      action.fadeOut(0.3);
-      resolve();
-    }, duration);
+      // Listen for animation completion
+      action.clampWhenFinished = true;
+      const duration = action.getClip().duration * 1000;
+      setTimeout(() => {
+        action.fadeOut(0.3);
+        resolve();
+      }, duration);
     });
   };
 
   const playAllAnimations = async () => {
     const animationList = Object.keys(animationMap);
-    
+
     for (const anim of animationList) {
+      if (!isVisible) break; // Stop if component is set to invisible
       setCurrentAnimation(anim);
       await playAnimation(anim);
-      // Shorter delay between animations
       await new Promise(resolve => setTimeout(resolve, 300));
     }
-    
+
     setIsAnimating(false);
-    // Return to idle animation
-    playAnimation('idle');
+    // Fade out effect before disappearing
+    if (spidermanRef.current) {
+      const material = spidermanRef.current.material;
+      const startOpacity = 1;
+      const duration = 1000; // 1 second fade
+      const startTime = Date.now();
+
+      const fadeOut = () => {
+        const elapsed = Date.now() - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        
+        if (progress < 1) {
+          const newOpacity = startOpacity * (1 - progress);
+          spidermanRef.current.traverse((child) => {
+            if (child.isMesh) {
+              child.material.transparent = true;
+              child.material.opacity = newOpacity;
+            }
+          });
+          requestAnimationFrame(fadeOut);
+        } else {
+          setIsVisible(false);
+        }
+      };
+
+      fadeOut();
+    }
   };
-  // Updated effect to handle animation triggers
   useEffect(() => {
     if (!animationTrigger || isAnimating) return;
 
@@ -75,19 +97,18 @@ export function SpiderMan({ animationTrigger }) {
         setIsAnimating(true);
         await playAnimation(animationTrigger);
         setIsAnimating(false);
-        // Return to idle after single animation
         playAnimation('idle');
       }
     };
 
     handleAnimation();
   }, [animationTrigger]);
-  // Initial idle animation
   useEffect(() => {
     if (actions && Object.keys(actions).length > 0) {
       playAnimation('idle');
     }
   }, [actions]);
+  if (!isVisible) return null;
   return (
     <primitive
       ref={spidermanRef}

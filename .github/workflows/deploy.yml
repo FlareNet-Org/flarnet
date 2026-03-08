@@ -1,0 +1,54 @@
+name: Deploy Frontend to AWS S3 & CloudFront
+
+on:
+  push:
+    branches:
+      - chk_cicd
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Create env file
+        run: |
+          echo "VITE_API_BASE_URL=https://api.dataflarenet.com" > .env.production
+
+      - name: Build Project
+        env:
+          VITE_API_BASE_URL: https://api.dataflarenet.com
+        run: npm run build
+
+      # Debug Step: Print Bucket Name
+      - name: Debug S3 Bucket Name
+        run: |
+          echo "Deploying to S3 bucket: ${{ secrets.AWS_S3_BUCKET }}"
+
+      # Debug Step: Validate S3 Bucket Exists
+      - name: Validate S3 Bucket
+        run: aws s3 ls s3://${{ secrets.AWS_S3_BUCKET }}
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ap-south-1
+
+      - name: Deploy to S3
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ap-south-1
+        run: |
+          aws s3 sync dist/ s3://${{ secrets.AWS_S3_BUCKET }} --delete
+
+      - name: Invalidate CloudFront Cache
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ap-south-1
+        run: |
+          aws cloudfront create-invalidation --distribution-id ${{ secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID }} --paths "/*"
