@@ -1,0 +1,173 @@
+/* AboutUs.css - Matching app theme styles */
+
+/* Animation for floating orbs - matches HeroSection */
+@keyframes orb-float {
+    0%, 100% {
+        transform: translateY(0) translateX(0);
+    }
+    25% {
+        transform: translateY(-20px) translateX(10px);
+    }
+    50% {
+        transform: translateY(0) translateX(20px);
+    }
+    75% {
+        transform: translateY(20px) translateX(10px);
+    }
+}
+
+@keyframes orb-float-delayed {
+    0%, 100% {
+        transform: translateY(0) translateX(0);
+    }
+    25% {
+        transform: translateY(20px) translateX(-10px);
+    }
+    50% {
+        transform: translateY(0) translateX(-20px);
+    }
+    75% {
+        transform: translateY(-20px) translateX(-10px);
+    }
+}
+
+.animate-orb-float {
+    animation: orb-float 15s ease-in-out infinite;
+}
+
+.animate-orb-float-delayed {
+    animation: orb-float-delayed 18s ease-in-out infinite;
+    animation-delay: 2s;
+}
+
+/* Grid pattern background */
+.bg-grid-pattern {
+    background-image: 
+        linear-gradient(rgba(59, 130, 246, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(59, 130, 246, 0.1) 1px, transparent 1px);
+    background-size: 50px 50px;
+}
+
+/* Glow effects */
+.shadow-glow {
+    box-shadow: 0 0 40px rgba(59, 130, 246, 0.15);
+}
+
+.shadow-glow-blue {
+    box-shadow: 0 0 30px rgba(59, 130, 246, 0.2);
+}
+
+/* Gradient text animation */
+@keyframes gradient-shift {
+    0%, 100% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+.animate-gradient {
+    background-size: 200% 200%;
+    animation: gradient-shift 3s ease infinite;
+}
+
+/* Smooth transitions for cards */
+.transition-all {
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Responsive image containers */
+.about-image-container {
+    position: relative;
+    overflow: hidden;
+    border-radius: 1rem;
+}
+
+.about-image-container::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        135deg,
+        rgba(59, 130, 246, 0.1) 0%,
+        transparent 50%,
+        rgba(6, 182, 212, 0.1) 100%
+    );
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* Tech stack card hover effect */
+.tech-card:hover .tech-icon {
+    filter: drop-shadow(0 0 10px rgba(6, 182, 212, 0.5));
+}
+
+/* Blockquote styling */
+blockquote {
+    position: relative;
+}
+
+blockquote::before {
+    content: '"';
+    position: absolute;
+    top: -10px;
+    left: 10px;
+    font-size: 4rem;
+    color: rgba(59, 130, 246, 0.2);
+    font-family: Georgia, serif;
+    line-height: 1;
+}
+
+/* Contact button hover effects */
+.contact-btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
+}
+
+.contact-btn-secondary:hover {
+    transform: translateY(-2px);
+    background: rgba(30, 41, 59, 0.5);
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .about-hero-title {
+        font-size: 2.5rem;
+    }
+    
+    .about-section {
+        padding: 3rem 1rem;
+    }
+}
+
+/* Scroll reveal animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in-up {
+    animation: fadeInUp 0.6s ease-out forwards;
+}
+
+/* Feature card icon animation */
+@keyframes pulse-glow {
+    0%, 100% {
+        box-shadow: 0 0 20px rgba(6, 182, 212, 0.2);
+    }
+    50% {
+        box-shadow: 0 0 30px rgba(6, 182, 212, 0.4);
+    }
+}
+
+.feature-icon-container:hover {
+    animation: pulse-glow 2s ease-in-out infinite;
+}

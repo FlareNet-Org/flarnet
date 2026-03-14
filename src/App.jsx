@@ -16,6 +16,7 @@ import LoginPage from './components/LoginPage';
 import ProjectLister from './components/pages/ProjectLister';
 import NavBar from './components/NavBar';
 import Footer from './components/Footer';
+import AboutUs from './components/pages/AboutUs';
 import { useUser } from './context/userContext';
 import ProtectedRoute from './components/ProctedRoutes/ProtectedRoute';
 
@@ -31,6 +32,7 @@ function AppContent() {
         {/* public routes */}
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/about" element={<AboutUs />} />
         
         {/* private routes */}
         <Route path="/new" element={
