@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import "./HeroSection.css";
 import { useNavigate } from "react-router-dom";
-import { SpiderMan } from './chatAssistance/SpiderMan'
+// import { SpiderMan } from './chatAssistance/SpiderMan' // TEMPORARILY DISABLED
 import { ChatInterface } from "./chatAssistance/ChaatInterface";
 import { Canvas } from '@react-three/fiber'
 import { OrbitControls, Environment } from '@react-three/drei'
@@ -306,7 +306,7 @@ const HeroSection = () => {
         >
           <ambientLight intensity={1.2} />
           <directionalLight position={[3, 5, 2]} intensity={1.5} />
-          <SpiderMan animationTrigger="all" />
+          {/* <SpiderMan animationTrigger="all" /> */}{/* TEMPORARILY DISABLED */}
           <Environment preset="sunset" />
         </Canvas>
       </div>

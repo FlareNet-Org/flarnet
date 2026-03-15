@@ -14,8 +14,7 @@ import { useUser } from '../../context/userContext';
 const ProjectsPage = () => {
     const API_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
     const { user } = useUser(); // Get the user data from the context
-    const [isLoading, setIsLoading] = useState(false);
-    const [newProject, setNewProject] = useState({ name: "", gitUrl: "", description: "", ownerId: 1 });
+
     const navigate = useNavigate();
     const [userInfo, setUserInfo] = useState(null);
     const [userRepos, setUserRepos] = useState([]);
@@ -51,78 +50,7 @@ const ProjectsPage = () => {
         }
     }
 
-    // Add this inside a `useEffect` in your `ProjectsPage` component to handle the canvas animation:
 
-    useEffect(() => {
-        const canvas = document.getElementById('animated-canvas');
-        const ctx = canvas.getContext('2d');
-        const circles = [];
-        const maxCircles = 10;
-
-        const resizeCanvas = () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight; // Use the full height of the viewport
-        };
-
-
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
-
-        class Circle {
-            constructor(x, y, radius, speed, color) {
-                this.x = x;
-                this.y = y;
-                this.radius = radius;
-                this.speed = speed;
-                this.color = color;
-            }
-
-            update() {
-                this.x += Math.cos(this.speed) * 2;
-                this.y += Math.sin(this.speed) * 2;
-
-                if (this.x > canvas.width) this.x = 0;
-                if (this.y > canvas.height) this.y = 0;
-                if (this.x < 0) this.x = canvas.width;
-                if (this.y < 0) this.y = canvas.height;
-            }
-
-            draw() {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                ctx.fillStyle = this.color;
-                ctx.fill();
-                ctx.closePath();
-            }
-        }
-
-        const createCircles = () => {
-            for (let i = 0; i < maxCircles; i++) {
-                const radius = Math.random() * 20 + 10;
-                const x = Math.random() * canvas.width;
-                const y = Math.random() * canvas.height;
-                const speed = Math.random() * Math.PI * 2;
-                const color = `hsl(${Math.random() * 360}, 100%, 75%)`;
-                circles.push(new Circle(x, y, radius, speed, color));
-            }
-        };
-
-        const animate = () => {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            circles.forEach((circle) => {
-                circle.update();
-                circle.draw();
-            });
-            requestAnimationFrame(animate);
-        };
-
-        createCircles();
-        animate();
-
-        return () => {
-            window.removeEventListener('resize', resizeCanvas);
-        };
-    }, []);
 
     // Fetch user's previous projects
     // useEffect(() => {
@@ -207,28 +135,6 @@ const ProjectsPage = () => {
             fetchAccessToken(code);
         }
     }, [location.search]);
-
-    const handleCreateProject = async () => {
-        if (newProject.name && newProject.gitUrl && newProject.description) {
-            try {
-                setIsLoading(true);
-                const response = await axios.post("${API_URL}/create-project", newProject);
-                if (response.data.success) {
-                    setProjects([...projects, newProject]);
-                    setNewProject({ name: "", gitUrl: "", description: "", ownerId: newProject.ownerId });
-                    alert(response.data.message);
-                } else {
-                    alert("Failed to create project");
-                }
-            } catch (e) {
-                alert("Error: " + e.message);
-            } finally {
-                setIsLoading(false);
-            }
-        } else {
-            alert("Please fill in all fields!");
-        }
-    };
 
     const handleAuthorizationWithGithub = async () => {
         try {
@@ -359,20 +265,7 @@ const ProjectsPage = () => {
                     </div>
                 )}
 
-                {/* Create Project Form */}
-                <div className="mt-16 max-w-2xl mx-auto p-8 rounded-2xl backdrop-blur-md bg-slate-800/30 
-                              border border-blue-500/10 hover:border-blue-500/30 transition-all duration-500">
-                    <h3 className="text-2xl font-semibold mb-8 bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
-                        Create a New Project
-                    </h3>
-                    <div className="space-y-6">
-                        {/* Form fields... */}
-                    </div>
-                </div>
             </div>
-
-            {/* Animated Canvas */}
-            <canvas id="animated-canvas" className="fixed inset-0 pointer-events-none opacity-30" />
         </div>
     );
 };

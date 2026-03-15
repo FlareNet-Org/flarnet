@@ -7,7 +7,7 @@ import axios from "axios";
 import { AIAnalysis } from "../deployment/AIAnalysis";
 import { LogTerminal } from "../deployment/LogTerminal";
 import { Canvas } from "@react-three/fiber";
-import { SpiderMan } from "../chatAssistance/SpiderMan";
+// import { SpiderMan } from "../chatAssistance/SpiderMan"; // TEMPORARILY DISABLED
 import { ChatInterface } from "../chatAssistance/ChaatInterface";
 import { Environment } from "@react-three/drei";
 
@@ -148,7 +148,7 @@ const DeploymentProgress = () => {
         >
           <ambientLight intensity={1.2} />
           <directionalLight position={[3, 5, 2]} intensity={1.5} />
-          <SpiderMan animationTrigger="all" />
+          {/* <SpiderMan animationTrigger="all" /> */}{/* TEMPORARILY DISABLED */}
           <Environment preset="sunset" />
         </Canvas>
       </div>

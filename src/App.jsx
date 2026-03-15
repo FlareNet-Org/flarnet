@@ -17,6 +17,7 @@ import ProjectLister from './components/pages/ProjectLister';
 import NavBar from './components/NavBar';
 import Footer from './components/Footer';
 import AboutUs from './components/pages/AboutUs';
+import ContactUs from './components/pages/ContactUs';
 import { useUser } from './context/userContext';
 import ProtectedRoute from './components/ProctedRoutes/ProtectedRoute';
 
@@ -33,6 +34,7 @@ function AppContent() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/about" element={<AboutUs />} />
+        <Route path="/contact" element={<ContactUs />} />
         
         {/* private routes */}
         <Route path="/new" element={
